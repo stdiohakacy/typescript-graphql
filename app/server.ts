@@ -8,6 +8,11 @@ import Express from 'express'
 import { UserResolver } from "./resolvers/User"
 import { CartResolver } from "./resolvers/Cart"
 import { OrderResolver } from "./resolvers/Order"
+import { ChatResolver } from "./resolvers/Chat"
+import dotenv from "dotenv";
+import "reflect-metadata";
+
+dotenv.config();
 
 const main = async () => {
     const schema = await buildSchema({
@@ -16,7 +21,8 @@ const main = async () => {
             ProductResolver,
             UserResolver,
             CartResolver,
-            OrderResolver
+            OrderResolver,
+            ChatResolver,
         ],
         emitSchemaFile: true,
         validate: false,
@@ -24,6 +30,7 @@ const main = async () => {
 
     // create mongoose connection
     const mongoose = await connect(String(process.env.MONGODB_URI_LOCAL));
+    
     await mongoose.connection;
 
     const server = new ApolloServer({
@@ -33,7 +40,7 @@ const main = async () => {
 
     const app = Express();
     await server.start();
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ app, cors: false, });
 
     app.listen(
         { port: process.env.PORT },

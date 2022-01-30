@@ -26,6 +26,13 @@ input CategoriesInput {
   name: String!
 }
 
+"""The Chat model"""
+type Chat {
+  id: ID!
+  message: String!
+  name: String!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
@@ -34,6 +41,7 @@ scalar DateTime
 type Mutation {
   createCart(data: CartInput!): Cart!
   createCategory(data: CategoriesInput!): Categories!
+  createChat(message: String!, name: String!): Chat!
   createOrder(data: OrderInput!): Order!
   createProduct(data: ProductInput!): Product!
   createUser(data: UserInput!): User!
@@ -80,6 +88,7 @@ input ProductInput {
 }
 
 type Query {
+  getChats: [Chat!]!
   returnAllCart: [Cart!]!
   returnAllCategories: [Categories!]!
   returnAllOrder: [Order!]!
