@@ -41,7 +41,7 @@ scalar DateTime
 type Mutation {
   createCart(data: CartInput!): Cart!
   createCategory(data: CategoriesInput!): Categories!
-  createChat(message: String!, name: String!): Boolean!
+  createChat(message: String!, name: String!): Chat!
   createOrder(data: OrderInput!): Order!
   createProduct(data: ProductInput!): Product!
   createUser(data: UserInput!): User!

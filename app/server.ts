@@ -1,6 +1,9 @@
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
 import { ApolloServer } from 'apollo-server-express'
+import cors from 'cors'
 import dotenv from "dotenv"
 import Express from 'express'
+import { execute, subscribe } from 'graphql'
 import { createServer } from "http"
 import { connect } from "mongoose"
 import "reflect-metadata"
@@ -12,13 +15,13 @@ import { ChatResolver } from "./resolvers/Chat"
 import { OrderResolver } from "./resolvers/Order"
 import { ProductResolver } from "./resolvers/Product"
 import { UserResolver } from "./resolvers/User"
-import { execute, subscribe } from 'graphql'
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core'
 
 dotenv.config();
 
 const main = async () => {
     const app = Express();
+    app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
     const schema = await buildSchema({
         resolvers: [
             CategoriesResolver,
@@ -50,15 +53,16 @@ const main = async () => {
     });
 
     await apolloServer.start();
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({ app, cors: false });
     const httpServer = createServer(app);
 
     const subscriptionServer = SubscriptionServer.create(
         { schema, execute, subscribe}, 
-        { server: httpServer, path: '/graphql', }
+        { server: httpServer, path: '/subscriptions', }
     );
 
     httpServer.listen(process.env.PORT, () => {
+        subscriptionServer
         console.log(`Server ready and listening at http://localhost:4000${apolloServer.graphqlPath}`);
     })
 }

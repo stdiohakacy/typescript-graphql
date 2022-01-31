@@ -11,16 +11,17 @@ export class ChatResolver {
     return chats;
   }
 
-  @Mutation(_returns => Boolean)
+  @Mutation(() => Chat)
   async createChat(
     @PubSub() pubSub: PubSubEngine,
     @Arg("name") name: string,
     @Arg("message") message: string
-  ): Promise<boolean> {
+  ): Promise<Chat> {
     const chat = { id: String(chats.length + 1), name, message };
     chats.push(chat);
-    await pubSub.publish(channel, chat)
-    return true;
+    const payload = chat;
+    await pubSub.publish(channel, payload);
+    return chat;
   }
 
   @Subscription({ topics: channel })
