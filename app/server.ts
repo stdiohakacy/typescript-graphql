@@ -8,7 +8,6 @@ import Express from 'express'
 import { UserResolver } from "./resolvers/User"
 import { CartResolver } from "./resolvers/Cart"
 import { OrderResolver } from "./resolvers/Order"
-import { ChatResolver } from "./resolvers/Chat"
 import dotenv from "dotenv";
 import "reflect-metadata";
 
@@ -22,7 +21,6 @@ const main = async () => {
             UserResolver,
             CartResolver,
             OrderResolver,
-            ChatResolver,
         ],
         emitSchemaFile: true,
         validate: false,
