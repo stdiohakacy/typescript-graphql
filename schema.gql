@@ -41,7 +41,7 @@ scalar DateTime
 type Mutation {
   createCart(data: CartInput!): Cart!
   createCategory(data: CategoriesInput!): Categories!
-  createChat(message: String!, name: String!): Chat!
+  createChat(message: String!, name: String!): Boolean!
   createOrder(data: OrderInput!): Order!
   createProduct(data: ProductInput!): Product!
   createUser(data: UserInput!): User!
@@ -96,8 +96,12 @@ type Query {
   returnAllUsers: [User!]!
   returnSingleCart(id: String!): Cart!
   returnSingleCategory(id: String!): Categories!
-  returnSingleProduct(id: String!): Order!
+  returnSingleProduct(id: String!): Product!
   returnSingleUser(id: String!): User!
+}
+
+type Subscription {
+  messageSent: Chat!
 }
 
 """The User model"""
